@@ -1,0 +1,124 @@
+﻿@model SampleProject.Models.SampleModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+    //jQuery Ajax
+
+        $("#jQuerysample").on('click', function () {
+            debugger;
+            var cnt = 0;
+            if ($('#name').val() == "" || $('#name').val() == null) {
+                $('#errormsg').append("The Name field is required.");
+                cnt++;
+                return false;
+            }
+            if ($('#age').val() == "" || $('#age').val() == null) {
+                $('#errormsgAge').append("The Age field is required.");
+                cnt++;
+                return false;
+            }
+            if ($('#phno').val() == "" || $('#phno').val() == null) {
+                $('#errorMsgforPhno').append("The Phone Number field is required.");
+                cnt++;
+                return false;
+
+            }
+            if ($('#email').val() == "" || $('#email').val() == null) {
+                $('#errorMsgforEmail').append("The Email field is required.");
+                cnt++;
+                return false;
+            }
+            if (cnt == 0) {
+                $('form').submit();
+               
+            }
+        });
+
+        $(document).on("click", "#ajaxSample", function () {
+            $.ajax({
+                type: "POST",
+                url: "/SampleModels/CreateByAjax",
+                dataType: "json",
+                data: $('#Create').serialize(),
+                success: function (response) {
+                },
+                failure: function (response) {
+
+                }
+            });
+        });
+    });
+
+</script>
+
+<script>
+    function myFunction() {
+        document.getElementById("Create").submit();
+    }
+</script>
+
+
+<h1>Create</h1>
+
+<h4>SampleModel</h4>
+<hr />
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="Create" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" id="errormsg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="age" class="control-label"></label>
+                <input asp-for="age" class="form-control" />
+                <span asp-validation-for="age" id="errormsgAge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="phno" class="control-label"></label>
+                <input asp-for="phno" class="form-control" />
+                <span asp-validation-for="phno" id="errorMsgforPhno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input asp-for="email" class="form-control" />
+                <span asp-validation-for="email" id="errorMsgforEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <table>
+                    <tr>
+                        <td> <input type="submit" value="Create" class="btn btn-primary" /></td>
+                        <td></td>
+                        <td id="ajaxSample" style="width: 150px;background:rgb(249, 144, 70); text-align:center;"><label style="cursor:pointer;">Ajax Submit</label></td>
+                        <td></td>
+                        <td id="jQuerysample" style="width: 150px;background:rgb(249, 144, 70); text-align:center;"><label style="cursor:pointer;">Jquery Submit</label></td>
+                        <td></td>
+                        <td><input type="button" class="btn btn-primary"  onclick="myFunction()" value="JavaScript submit"></td>
+                    </tr>
+                </table>
+               
+               
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
